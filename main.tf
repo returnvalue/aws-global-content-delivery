@@ -99,3 +99,30 @@ resource "aws_cloudfront_distribution" "website_cdn" {
     Name = "website-cdn"
   }
 }
+
+# S3 Bucket Policy: Allow CloudFront OAC to access the bucket
+resource "aws_s3_bucket_policy" "allow_cloudfront" {
+  bucket = aws_s3_bucket.website_origin.id
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudFrontServicePrincipalReadOnly",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "${aws_s3_bucket.website_origin.arn}/*",
+      "Condition": {
+        "ArnEquals": {
+          "aws:SourceArn": "${aws_cloudfront_distribution.website_cdn.arn}"
+        }
+      }
+    }
+  ]
+}
+POLICY
+}
