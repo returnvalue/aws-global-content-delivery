@@ -45,3 +45,12 @@ resource "aws_s3_bucket" "website_origin" {
     Name = "website-origin-bucket"
   }
 }
+
+# CloudFront Origin Access Control: Securely link CloudFront to S3
+resource "aws_cloudfront_origin_access_control" "website_oac" {
+  name                              = "website-oac"
+  description                       = "OAC for static website"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
