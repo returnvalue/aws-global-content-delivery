@@ -36,3 +36,12 @@ provider "aws" {
     cloudfront     = "http://localhost:4566"
   }
 }
+
+# S3 Bucket: The origin for our static website content
+resource "aws_s3_bucket" "website_origin" {
+  bucket = "global-static-website-origin"
+
+  tags = {
+    Name = "website-origin-bucket"
+  }
+}
