@@ -126,3 +126,12 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
 }
 POLICY
 }
+
+# Outputs: Key identifiers for our Global Content Delivery network
+output "s3_bucket_arn" {
+  value = aws_s3_bucket.website_origin.arn
+}
+
+output "cloudfront_domain_name" {
+  value = aws_cloudfront_distribution.website_cdn.domain_name
+}
